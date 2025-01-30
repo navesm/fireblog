@@ -1,7 +1,7 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/storage';
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyC7KbDsyJerLcZNrH-IjJk_GfdIcxtJISQ",
@@ -13,10 +13,15 @@ const firebaseConfig = {
   measurementId: "G-CNQQ02YV0X"
 };
 
-if (!firebase.getApps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+// Initialize Firebase only if no apps are already running
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
-export const auth = firebase.auth();
-export const firestore = firebase.firestore();
-export const storage = firebase.storage();
+
+
+export const auth = getAuth(app);
+export const googleAuthProvider = new GoogleAuthProvider();
+
+export const firestore = getFirestore(app);
+export const storage = getStorage(app);
+
+export default app;
